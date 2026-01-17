@@ -4,7 +4,7 @@ Flask API for Tsunami Detection Model
 REST API endpoint for real-time tsunami prediction
 """
 
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, make_response
 from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
@@ -62,7 +62,11 @@ def health():
 def serve_dashboard():
     """Serve the live dashboard with Indian Ocean data"""
     try:
-        return send_file('index_live.html')
+        response = make_response(send_file('index_live.html'))
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
     except Exception as e:
         logger.error(f"Error serving dashboard: {e}")
         return jsonify({'error': 'Dashboard not found'}), 404
@@ -72,7 +76,11 @@ def serve_dashboard():
 def serve_summary():
     """Serve a lightweight summary page"""
     try:
-        return send_file('summary.html')
+        response = make_response(send_file('summary.html'))
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
     except Exception as e:
         logger.error(f"Error serving summary: {e}")
         return jsonify({'error': 'Summary page not found'}), 404
