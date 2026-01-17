@@ -473,8 +473,6 @@
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 const data = await resp.json();
                 if (!data.success) throw new Error(data.message || data.error || 'Failed to load');
-
-                statusEl.textContent = `✓ Updated: ${new Date().toLocaleString()}`;
                 
                 document.getElementById('totalEvents').textContent = data.total_earthquakes || 0;
                 document.getElementById('highRisk').textContent = data.high_risk_count || 0;
@@ -574,10 +572,13 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // Load on page ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadSummary);
+        } else {
+            // Page already loaded (from cache)
             loadSummary();
-        });
-        setInterval(loadSummary, 30000);
+        }
 
         async function loadTestData() {
             const statusEl = document.getElementById('status');
