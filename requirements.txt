@@ -18,7 +18,9 @@ cartopy==0.22.0
 geopandas==0.14.1
 shapely==2.0.2
 
-# API Requests
+# Web Framework for API
+flask==3.0.0
+flask-cors==4.0.0# API Requests
 requests==2.31.0
 urllib3==2.1.0
 aiohttp==3.9.1
