@@ -524,32 +524,33 @@
                 const top = sorted.slice(0, 5);
 
                 if (top.length === 0) {
-                    list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🌊</div><div>No recent earthquakes detected</div></div>';
-                    return;
+                    list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🌊</div><div>No recent earthquakes detected in the last 24 hours</div></div>';
+                } else {
+                    top.forEach(eq => {
+                        const risk = eq.tsunami_risk || 'LOW';
+                        const prob = eq.tsunami_probability ? (eq.tsunami_probability * 100).toFixed(1) : '0.0';
+                        const tagClass = risk === 'HIGH' ? 'tag-high' : risk === 'MODERATE' ? 'tag-moderate' : 'tag-low';
+                        
+                        const li = document.createElement('li');
+                        li.className = 'event-item';
+                        li.innerHTML = `
+                            <div class="event-header">
+                                <div class="event-title">M${eq.magnitude} — ${eq.location || 'Unknown'}</div>
+                                <span class="tag ${tagClass}">${risk}</span>
+                            </div>
+                            <div class="event-details">
+                                <span>📍 ${eq.latitude?.toFixed(2)}°, ${eq.longitude?.toFixed(2)}°</span>
+                                <span>📏 ${eq.depth} km deep</span>
+                                <span>⚠️ Risk: ${prob}%</span>
+                                <span>🕐 ${new Date(eq.time).toLocaleString()}</span>
+                                ${eq.url ? `<span><a href="${eq.url}" target="_blank" class="event-link">📌 USGS</a></span>` : ''}
+                            </div>
+                        `;
+                        list.appendChild(li);
+                    });
                 }
 
-                top.forEach(eq => {
-                    const risk = eq.tsunami_risk || 'LOW';
-                    const prob = eq.tsunami_probability ? (eq.tsunami_probability * 100).toFixed(1) : '0.0';
-                    const tagClass = risk === 'HIGH' ? 'tag-high' : risk === 'MODERATE' ? 'tag-moderate' : 'tag-low';
-                    
-                    const li = document.createElement('li');
-                    li.className = 'event-item';
-                    li.innerHTML = `
-                        <div class="event-header">
-                            <div class="event-title">M${eq.magnitude} — ${eq.location || 'Unknown'}</div>
-                            <span class="tag ${tagClass}">${risk}</span>
-                        </div>
-                        <div class="event-details">
-                            <span>📍 ${eq.latitude?.toFixed(2)}°, ${eq.longitude?.toFixed(2)}°</span>
-                            <span>📏 ${eq.depth} km deep</span>
-                            <span>⚠️ Risk: ${prob}%</span>
-                            <span>🕐 ${new Date(eq.time).toLocaleString()}</span>
-                            ${eq.url ? `<span><a href="${eq.url}" target="_blank" class="event-link">📌 USGS</a></span>` : ''}
-                        </div>
-                    `;
-                    list.appendChild(li);
-                });
+                statusEl.textContent = `✓ Updated: ${new Date().toLocaleString()}`;
             } catch (err) {
                 console.error(err);
                 statusEl.textContent = `✗ Error: ${err.message}`;
@@ -573,7 +574,9 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', loadSummary);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSummary();
+        });
         setInterval(loadSummary, 30000);
 
         async function loadTestData() {
@@ -638,31 +641,32 @@
 
                 if (top.length === 0) {
                     list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🌊</div><div>No recent earthquakes detected</div></div>';
-                    return;
+                } else {
+                    top.forEach(eq => {
+                        const risk = eq.tsunami_risk || 'LOW';
+                        const prob = eq.tsunami_probability ? (eq.tsunami_probability * 100).toFixed(1) : '0.0';
+                        const tagClass = risk === 'HIGH' ? 'tag-high' : risk === 'MODERATE' ? 'tag-moderate' : 'tag-low';
+                        
+                        const li = document.createElement('li');
+                        li.className = 'event-item';
+                        li.innerHTML = `
+                            <div class="event-header">
+                                <div class="event-title">M${eq.magnitude} — ${eq.location || 'Unknown'}</div>
+                                <span class="tag ${tagClass}">${risk}</span>
+                            </div>
+                            <div class="event-details">
+                                <span>📍 ${eq.latitude?.toFixed(2)}°, ${eq.longitude?.toFixed(2)}°</span>
+                                <span>📏 ${eq.depth} km deep</span>
+                                <span>⚠️ Risk: ${prob}%</span>
+                                <span>🕐 ${new Date(eq.time).toLocaleString()}</span>
+                                ${eq.url ? `<span><a href="${eq.url}" target="_blank" class="event-link">📌 USGS</a></span>` : ''}
+                            </div>
+                        `;
+                        list.appendChild(li);
+                    });
                 }
 
-                top.forEach(eq => {
-                    const risk = eq.tsunami_risk || 'LOW';
-                    const prob = eq.tsunami_probability ? (eq.tsunami_probability * 100).toFixed(1) : '0.0';
-                    const tagClass = risk === 'HIGH' ? 'tag-high' : risk === 'MODERATE' ? 'tag-moderate' : 'tag-low';
-                    
-                    const li = document.createElement('li');
-                    li.className = 'event-item';
-                    li.innerHTML = `
-                        <div class="event-header">
-                            <div class="event-title">M${eq.magnitude} — ${eq.location || 'Unknown'}</div>
-                            <span class="tag ${tagClass}">${risk}</span>
-                        </div>
-                        <div class="event-details">
-                            <span>📍 ${eq.latitude?.toFixed(2)}°, ${eq.longitude?.toFixed(2)}°</span>
-                            <span>📏 ${eq.depth} km deep</span>
-                            <span>⚠️ Risk: ${prob}%</span>
-                            <span>🕐 ${new Date(eq.time).toLocaleString()}</span>
-                            ${eq.url ? `<span><a href="${eq.url}" target="_blank" class="event-link">📌 USGS</a></span>` : ''}
-                        </div>
-                    `;
-                    list.appendChild(li);
-                });
+                statusEl.textContent = `🧪 Test Data - Updated: ${new Date().toLocaleString()}`;
             } catch (err) {
                 console.error(err);
                 statusEl.textContent = `✗ Error: ${err.message}`;
