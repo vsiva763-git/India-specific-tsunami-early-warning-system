@@ -464,7 +464,9 @@
         };
 
         async function loadSummary() {
+            console.log('loadSummary() called at:', new Date().toLocaleString());
             const statusEl = document.getElementById('status');
+            console.log('statusEl:', statusEl);
             try {
                 const resp = await fetch('/live-data', { 
                     cache: 'no-cache', 
@@ -472,6 +474,7 @@
                 });
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 const data = await resp.json();
+                console.log('Received data:', data);
                 if (!data.success) throw new Error(data.message || data.error || 'Failed to load');
                 
                 document.getElementById('totalEvents').textContent = data.total_earthquakes || 0;
@@ -548,9 +551,12 @@
                     });
                 }
 
+                // Update status message after all data is loaded
                 statusEl.textContent = `✓ Updated: ${new Date().toLocaleString()}`;
+                console.log('Status updated to:', statusEl.textContent);
+                
             } catch (err) {
-                console.error(err);
+                console.error('Error in loadSummary:', err);
                 statusEl.textContent = `✗ Error: ${err.message}`;
             }
         }
