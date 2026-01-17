@@ -40,9 +40,8 @@ pytz==2023.3
 python-dotenv==1.0.0
 pyyaml==6.0.1
 
-# JAX and ML Dependencies
+# ML dtypes (keep JAX out to avoid TF-Lite conflicts)
 ml-dtypes>=0.5.0
-jax>=0.4.0
 
 # Monitoring and Logging
 loguru==0.7.2
