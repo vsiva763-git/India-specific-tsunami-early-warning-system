@@ -6,8 +6,8 @@ set -e
 
 # Get port from environment variable with fallback
 PORT=${PORT:-5000}
-HOST=${HOST:-localhost}
-TIMEOUT=${TIMEOUT:-5}
+HOST=${HOST:-127.0.0.1}
+TIMEOUT=${TIMEOUT:-10}
 MAX_RETRIES=${MAX_RETRIES:-3}
 
 # Colors for output
@@ -29,8 +29,7 @@ check_health() {
     echo "[HEALTHCHECK] Attempt #$RETRY of $MAX_RETRIES..."
     
     # Try to curl the health endpoint
-    if curl -sf --connect-timeout $TIMEOUT \
-            --max-time $TIMEOUT \
+    if curl -sf --connect-timeout $TIMEOUT --max-time $TIMEOUT -w "\n%{http_code}" \
             "http://$HOST:$PORT/health" > /dev/null 2>&1; then
         
         echo -e "${GREEN}[HEALTHCHECK] ✓ Health check passed!${NC}"

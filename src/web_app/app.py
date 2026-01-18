@@ -48,13 +48,14 @@ def create_app(config_path='config/config.yaml'):
     app.register_blueprint(api_bp, url_prefix='/api')
     app.register_blueprint(web_bp, url_prefix='/')
     
-    # Health check endpoint
+    # Health check endpoint - returns 200 status
     @app.route('/health')
     def health_check():
-        return {
+        return jsonify({
             'status': 'healthy',
-            'service': 'Tsunami Early Warning System'
-        }
+            'service': 'Tsunami Early Warning System',
+            'timestamp': datetime.utcnow().isoformat()
+        }), 200
     
     logger.success("Flask application created successfully")
     
