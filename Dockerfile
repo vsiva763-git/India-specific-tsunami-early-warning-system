@@ -34,9 +34,13 @@ ENV PYTHONUNBUFFERED=1
 ENV FLASK_APP=main.py
 ENV PORT=5000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:${PORT}')"
+# Create health check script
+RUN echo '#!/bin/bash\nPORT=${PORT:-5000}\npython -c "import requests; requests.get(\"http://localhost:$PORT/health\", timeout=5)"' > /app/healthcheck.sh && \
+    chmod +x /app/healthcheck.sh
+
+# Health check - increased start period for model loading
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
+    CMD /app/healthcheck.sh
 
 # Default command - use bash to substitute PORT variable
 CMD bash -c "python main.py --host 0.0.0.0 --port \$PORT"
