@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   tsunami-warning:
-    build: .
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
     container_name: tsunami-warning-system
     ports:
       - "5000:5000"

@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Make scripts executable
-RUN chmod +x /app/healthcheck.sh /app/start.sh
+RUN chmod +x /app/scripts/healthcheck.sh /app/scripts/start.sh
 
 # Create necessary directories
 RUN mkdir -p logs data/raw data/processed data/cache models/checkpoints

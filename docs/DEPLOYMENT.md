@@ -4,6 +4,8 @@
 
 Your project is now configured for easy deployment! Choose your preferred platform:
 
+**Note:** The project uses organized folder structure with configs in `deployment/` directory.
+
 ---
 
 ## Option 1: Railway (Recommended - Easiest)
@@ -15,7 +17,7 @@ Your project is now configured for easy deployment! Choose your preferred platfo
 2. Sign in with GitHub
 3. Click **"New Project"** → **"Deploy from GitHub repo"**
 4. Select `India-specific-tsunami-early-warning-system`
-5. Railway auto-detects Python and deploys! ✅
+5. Railway auto-detects configuration from `deployment/railway.json` and deploys! ✅
 6. Your app will be live at: `https://your-app.railway.app`
 
 **Student Benefit:** Link GitHub Student Pack at railway.app/account for $5/month credit
@@ -31,7 +33,7 @@ Your project is now configured for easy deployment! Choose your preferred platfo
 2. Sign up with GitHub
 3. Click **"New"** → **"Web Service"**
 4. Connect your repo: `vsiva763-git/India-specific-tsunami-early-warning-system`
-5. Render uses `render.yaml` automatically
+5. Render uses `deployment/render.yaml` automatically
 6. Click **"Create Web Service"**
 7. Your app will be live at: `https://tsunami-warning-system.onrender.com`
 

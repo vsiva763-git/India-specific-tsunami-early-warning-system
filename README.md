@@ -95,21 +95,21 @@ pip install -r requirements.txt
 3. **Prepare data:**
 ```bash
 # Create sample training data
-python prepare_data.py --sample --prepare
+python scripts/prepare_data.py --sample --prepare
 
 # Or download real global tsunami data
-python prepare_data.py --all
+python scripts/prepare_data.py --all
 ```
 
 4. **Train the model:**
 
    **Option A: Local Training**
    ```bash
-   python train_model.py --epochs 50 --batch-size 32
+   python scripts/train_model.py --epochs 50 --batch-size 32
    ```
 
    **Option B: Google Colab (Recommended for GPU)**
-   - Open [`Train_Tsunami_Model_Colab.ipynb`](Train_Tsunami_Model_Colab.ipynb) in Google Colab
+   - Open [`notebooks/Train_Tsunami_Binary_Focal_Loss_Kaggle.ipynb`](notebooks/Train_Tsunami_Binary_Focal_Loss_Kaggle.ipynb) in Google Colab or Kaggle
    - Follow the step-by-step instructions
    - Download the trained model when complete
 
@@ -176,10 +176,13 @@ curl http://localhost:5000/api/advisories/incois
 Run standalone monitoring:
 ```bash
 # Continuous monitoring
-python monitor.py --interval 300
+python scripts/monitor.py --interval 300
 
 # Single check
-python monitor.py --once
+python scripts/monitor.py --once
+
+# Run demo tests
+python scripts/demo.py
 ```
 
 ## 🧠 Model Architecture
@@ -253,15 +256,35 @@ India-specific-tsunami-early-warning-system/
 ├── config/
 │   └── config.yaml                  # System configuration
 ├── data/
-│   ├── raw/                         # Raw training data
-│   ├── processed/                   # Processed training data
-│   └── cache/                       # API response cache
-├── models/
-│   ├── checkpoints/                 # Training checkpoints
-│   ├── scalers/                     # Data scalers
-│   └── best_model.keras             # Trained model
-├── logs/                            # System logs
-├── src/
+│   └── raw/                         # Raw data storage
+├── deployment/                      # Deployment configurations
+│   ├── Dockerfile                   # Docker container config
+│   ├── docker-compose.yml           # Docker compose setup
+│   ├── Procfile                     # Heroku deployment
+│   ├── railway.json                 # Railway deployment
+│   ├── render.yaml                  # Render deployment
+│   └── runtime.txt                  # Python runtime version
+├── docs/                            # Documentation
+│   ├── API_EXAMPLES.md              # API usage examples
+│   ├── DEPLOYMENT.md                # Deployment guide
+│   ├── PROJECT_SUMMARY.md           # Project summary
+│   ├── QUICKSTART.md                # Quick start guide
+│   └── TRAINING_GUIDE.md            # Model training guide
+├── models/                          # Trained models
+│   ├── tsunami_detection_binary_focal.keras  # Main model
+│   └── model_metadata.json          # Model metadata
+├── notebooks/                       # Jupyter notebooks
+│   └── Train_Tsunami_Binary_Focal_Loss_Kaggle.ipynb
+├── scripts/                         # Utility scripts
+│   ├── check_health.py              # Health check script
+│   ├── demo.py                      # Demo and testing
+│   ├── healthcheck.sh               # Docker health check
+│   ├── monitor.py                   # Monitoring script
+│   ├── prepare_data.py              # Data preparation
+│   ├── quickstart.sh                # Quick start script
+│   ├── start.sh                     # Startup script
+│   └── train_model.py               # Model training
+├── src/                             # Source code
 │   ├── data_collection/             # API data collectors
 │   │   ├── usgs_collector.py
 │   │   ├── noaa_tides_collector.py
@@ -269,7 +292,7 @@ India-specific-tsunami-early-warning-system/
 │   │   ├── incois_collector.py
 │   │   └── bathymetry_loader.py
 │   ├── models/                      # Deep learning models
-│   │   ├── cnn_lstm_model.py
+│   │   ├── cnn_lstm_binary_model.py
 │   │   ├── data_preprocessor.py
 │   │   └── model_trainer.py
 │   ├── filtering/                   # India-specific filtering
@@ -283,11 +306,11 @@ India-specific-tsunami-early-warning-system/
 │   │   ├── logger.py
 │   │   ├── config_loader.py
 │   │   └── data_helpers.py
-│   └── inference_engine.py          # Real-time inference
-├── main.py                          # Web app entry point
-├── train_model.py                   # Model training script
-├── monitor.py                       # Monitoring script
-├── prepare_data.py                  # Data preparation script
+│   └── inference_engine.py          # Real-time inference engine
+├── static/                          # Static web assets
+│   └── index_live.html              # Dashboard HTML
+├── app.py                           # Simple Flask app entry
+├── main.py                          # Main web app entry point
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # This file
 ```

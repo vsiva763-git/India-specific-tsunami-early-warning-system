@@ -23,8 +23,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Load model
-MODEL_PATH = Path('./tsunami_detection_binary_focal.keras')
-METADATA_PATH = Path('./model_metadata.json')
+MODEL_PATH = Path('./models/tsunami_detection_binary_focal.keras')
+METADATA_PATH = Path('./models/model_metadata.json')
 
 try:
     # Load model weights only (without custom loss function)
@@ -62,7 +62,7 @@ def health():
 def serve_dashboard():
     """Serve the live dashboard with Indian Ocean data"""
     try:
-        response = make_response(send_file('index_live.html'))
+        response = make_response(send_file('static/index_live.html'))
         response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '0'
@@ -70,20 +70,6 @@ def serve_dashboard():
     except Exception as e:
         logger.error(f"Error serving dashboard: {e}")
         return jsonify({'error': 'Dashboard not found'}), 404
-
-
-@app.route('/summary', methods=['GET'])
-def serve_summary():
-    """Serve a lightweight summary page"""
-    try:
-        response = make_response(send_file('summary.html'))
-        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-        response.headers['Pragma'] = 'no-cache'
-        response.headers['Expires'] = '0'
-        return response
-    except Exception as e:
-        logger.error(f"Error serving summary: {e}")
-        return jsonify({'error': 'Summary page not found'}), 404
 
 
 @app.route('/test-data', methods=['GET'])
